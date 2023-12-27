@@ -44,7 +44,8 @@
   },
   "homepage": "https://github.com/resendlabs/resend-node#readme",
   "dependencies": {
-    "@react-email/render": "0.0.9"
+    "@react-email/render": "0.0.9",
+    "undici": "^5.27.2"
   },
   "devDependencies": {
     "@types/jest": "29.5.7",

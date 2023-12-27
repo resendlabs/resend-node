@@ -1,3 +1,12 @@
+import type { fetch } from 'undici';
+
+export type Fetch = typeof fetch;
+
+export type Options = {
+  fetch?: Fetch;
+  headers?: Record<string, string>;
+};
+
 export const RESEND_ERROR_CODES_BY_KEY = {
   missing_required_field: 422,
   invalid_access: 422,
