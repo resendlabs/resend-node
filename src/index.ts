@@ -21,5 +21,7 @@ export * from './domains/interfaces/list-domains.interface';
 export * from './domains/interfaces/remove-domain.interface';
 export * from './domains/interfaces/update-domain.interface';
 export * from './domains/interfaces/verify-domain.interface';
+export * from './emails/interfaces/cancel-email-options.interface';
 export * from './emails/interfaces/create-email-options.interface';
 export * from './emails/interfaces/get-email-options.interface';
+export * from './emails/interfaces/update-email-options.interface';
