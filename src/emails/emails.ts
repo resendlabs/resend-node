@@ -1,4 +1,4 @@
-import type * as React from 'react';
+import type { ReactElement, JSXElementConstructor } from 'react';
 import { parseEmailToApiOptions } from '../common/utils/parse-email-to-api-options';
 import type { Resend } from '../resend';
 import type {
@@ -20,9 +20,9 @@ import type {
   UpdateEmailResponse,
   UpdateEmailResponseSuccess,
 } from './interfaces/update-email-options.interface';
+import { renderReactEmail } from './render';
 
 export class Emails {
-  private renderAsync?: (component: React.ReactElement) => Promise<string>;
   constructor(private readonly resend: Resend) {}
 
   async send(
@@ -36,21 +36,20 @@ export class Emails {
     payload: CreateEmailOptions,
     options: CreateEmailRequestOptions = {},
   ): Promise<CreateEmailResponse> {
+    // Only attempt to render React components if the react option is provided
     if (payload.react) {
-      if (!this.renderAsync) {
-        try {
-          const { renderAsync } = await import('@react-email/render');
-          this.renderAsync = renderAsync;
-        } catch (error) {
+      try {
+        payload.html = await renderReactEmail(
+          payload.react as ReactElement<Record<string, unknown>, string | JSXElementConstructor<unknown>>
+        );
+      } catch (error) {
+        if (error instanceof Error) {
           throw new Error(
-            'Failed to render React component. Make sure to install `@react-email/render`',
+            `Failed to render React component: ${error.message}. Make sure to install '@react-email/render'`,
           );
         }
+        throw error;
       }
-
-      payload.html = await this.renderAsync(
-        payload.react as React.ReactElement,
-      );
     }
 
     const data = await this.resend.post<CreateEmailResponseSuccess>(

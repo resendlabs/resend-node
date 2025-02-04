@@ -1,5 +1,5 @@
 export { Resend } from './resend';
-export { ErrorResponse } from './interfaces';
+export type { ErrorResponse } from './interfaces';
 export * from './api-keys/interfaces/create-api-key-options.interface';
 export * from './api-keys/interfaces/list-api-keys.interface';
 export * from './api-keys/interfaces/remove-api-keys.interface';
