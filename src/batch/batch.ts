@@ -10,7 +10,10 @@ import type {
 } from './interfaces/create-batch-options.interface';
 
 export class Batch {
-  private renderAsync?: (component: React.ReactElement) => Promise<string>;
+  private renderAsync?: (
+    component: React.ReactElement,
+    options?: { plainText?: boolean },
+  ) => Promise<string>;
   constructor(private readonly resend: Resend) {}
 
   async send(
@@ -38,8 +41,13 @@ export class Batch {
             );
           }
         }
-
-        email.html = await this.renderAsync(email.react as React.ReactElement);
+        const reactElement = email.react as React.ReactElement;
+        email.html = await this.renderAsync(reactElement);
+        if (email.text === undefined) {
+          email.text = await this.renderAsync(reactElement, {
+            plainText: true,
+          });
+        }
         email.react = undefined;
       }
 

@@ -22,7 +22,10 @@ import type {
 } from './interfaces/update-email-options.interface';
 
 export class Emails {
-  private renderAsync?: (component: React.ReactElement) => Promise<string>;
+  private renderAsync?: (
+    component: React.ReactElement,
+    options?: { plainText?: boolean },
+  ) => Promise<string>;
   constructor(private readonly resend: Resend) {}
 
   async send(
@@ -48,9 +51,13 @@ export class Emails {
         }
       }
 
-      payload.html = await this.renderAsync(
-        payload.react as React.ReactElement,
-      );
+      const reactElement = payload.react as React.ReactElement;
+      payload.html = await this.renderAsync(reactElement);
+      if (payload.text === undefined) {
+        payload.text = await this.renderAsync(reactElement, {
+          plainText: true,
+        });
+      }
     }
 
     const data = await this.resend.post<CreateEmailResponseSuccess>(
