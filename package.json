@@ -56,5 +56,5 @@
     "tsup": "7.2.0",
     "typescript": "5.5.4"
   },
-  "packageManager": "pnpm@9.7.1"
+  "packageManager": "pnpm@9.15.6"
 }
